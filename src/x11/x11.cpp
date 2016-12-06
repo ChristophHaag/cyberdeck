@@ -912,7 +912,7 @@ static void playVideo() {
 
   _ibexVideoPlayer = new Ibex::VLCVideoPlayer();
   _ibexVideoPlayer->playVideo(ibex->renderer->window.getSelectedVideoPath().c_str(),ibex->renderer->window.getIsStereoVideo(),
-			      dpy, root);
+			      dpy, root, 0);
   //_ibexVideoPlayer->openCamera(ibex->renderer->window.getIsStereoVideo(), -1);
 }
 static void playCamera() {
