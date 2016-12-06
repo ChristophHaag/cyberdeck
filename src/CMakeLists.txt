@@ -20,7 +20,7 @@ find_package(OIS)
 set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED OFF)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
-find_package(Boost 1.53.0 COMPONENTS filesystem system)
+find_package(Boost COMPONENTS filesystem system)
 
 if( OGRE_FOUND AND OGRE )
   add_definitions( -DENABLE_OGRE3D )
