@@ -26,13 +26,12 @@
 #define HAVE_LIBJPEG 1
 #include <jpeglib.h>
 #include "../glm/glm.h"
+#include <osvr/OSVR.h>
 #endif
 #endif
 
 #include "SimpleWorldRendererPlugin.h"
 
-#include "OVR.h"
-using namespace OVR;
 
 void renderSphericalDisplay(double r, double numHorizontalLines, double numVerticalLines, double width, double height) {
   glPushMatrix();
@@ -285,13 +284,30 @@ void SimpleWorldRendererPlugin::init() {
   loadSkybox();
 }
 
+
+inline OSVR_OrientationState
+getOrientationState(osvr::clientkit::Interface &iface) {
+    OSVR_OrientationState state;
+    OSVR_TimeValue timestamp;
+    OSVR_ReturnCode ret;
+    ret = osvrGetOrientationState(iface.get(), &timestamp, &state);
+    if (ret != OSVR_RETURN_SUCCESS) {
+        std::cout << "Sorry, no orientation state available for this route - "
+                "are you sure you have a device plugged in and your "
+                "path correct?" << std::endl;
+        std::cin.ignore();
+        throw std::runtime_error("No orientation state available");
+    }
+    return state;
+}
+
 double orientationRift[16] = {1, 0, 0, 0,
                               0, 1, 0, 0,
                               0, 0, 1, 0,
                               0, 0, 0, 1};
+/*
 double *getRiftOrientation() {
-    if(!FusionResult.IsAttachedToSensor()) return orientationRift;
-        Quatf quaternion = FusionResult.GetPredictedOrientation();//FusionResult.GetOrientation();
+  glm::quat quaternion = glm::quat; //toGlm(_renderInfo[0].pose.rotation) * _sensorZeroRotation;
 
   //float yaw, pitch, roll;
   //quaternion.GetEulerAngles<Axis_Y, Axis_X, Axis_Z>(&yaw, &pitch, &roll);
@@ -306,6 +322,7 @@ double *getRiftOrientation() {
   }
   return orientationRift;
 }
+*/
 
 void SimpleWorldRendererPlugin::step(const Desktop3DLocation &loc, double timeDiff_) {
   if (USE_FBO) {
@@ -365,8 +382,11 @@ void SimpleWorldRendererPlugin::step(const Desktop3DLocation &loc, double timeDi
     glLoadIdentity();
     glTranslated((i2 == 0) ? IOD: -IOD, 0, 0);
     gluPerspective(90.0f, width/2.0/height, 0.01f, 1000.0f);
-      
-    if(i2 == 0) orientation = getRiftOrientation();
+    auto iface = _osvrContext->getInterface("/me/head");
+    OSVR_OrientationState state = getOrientationState(iface);
+    //TODO:
+    if(i2 == 0) orientation = 0;
+    
       
     glMultMatrixd(orientation);
 

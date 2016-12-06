@@ -11,7 +11,8 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     SET(OperatingSystem "Linux")
 
 find_package(GLUT REQUIRED)
-find_package(OculusSDK)
+find_package(osvr REQUIRED)
+find_package(osvrRenderManager REQUIRED)
 find_package(OpenAL)
 find_package(Irrlicht)
 find_package(OGRE)
@@ -32,9 +33,7 @@ if( OGRE_FOUND AND OGRE )
 )
 endif( OGRE_FOUND AND OGRE )
 
-if( OCULUS_FOUND )
-  include_directories( ${OCULUS_INCLUDE_DIRS} )
-endif( OCULUS_FOUND )
+include_directories(${OSVR_INCLUDE_DIRS})
 
 if( IRRLICHT_FOUND AND IRRLICHT )  
   add_definitions( -DENABLE_IRRLICHT )
@@ -42,8 +41,8 @@ if( IRRLICHT_FOUND AND IRRLICHT )
   set(IRRLICHT_PLUGIN_FILES "irrlicht_plugin/irrlicht_plugin.cpp")
 endif( IRRLICHT_FOUND AND IRRLICHT )
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g -O0 -ggdb -DHAVE_LIBJPEG=1 ${IRRLICHT_INCLUDE_FLAGS} ${OGRE_INCLUDE_FLAGS} ${OCULUS_INCLUDE_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g  -O0 -ggdb -DHAVE_LIBJPEG=1 ${IRRLICHT_INCLUDE_FLAGS} ${OGRE_INCLUDE_FLAGS} ${OCULUS_INCLUDE_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g -O0 -ggdb -DHAVE_LIBJPEG=1 ${IRRLICHT_INCLUDE_FLAGS} ${OGRE_INCLUDE_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g  -O0 -ggdb -DHAVE_LIBJPEG=1 ${IRRLICHT_INCLUDE_FLAGS} ${OGRE_INCLUDE_FLAGS}")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 add_subdirectory(glm)
@@ -51,14 +50,14 @@ add_subdirectory(windows)
 add_subdirectory(filesystem)
 add_subdirectory(video)
 add_subdirectory(sixense)
-add_subdirectory(oculus)
+add_subdirectory(osvr)
 add_subdirectory(x11)
 
 include_directories(
  ${CMAKE_CURRENT_SOURCE_DIR}
  ${Boost_INCLUDE_DIR}
  )
-link_directories(${Boost_LIBRARY_DIR} ${OCULUS_LIBRARY_DIR})
+link_directories(${Boost_LIBRARY_DIR})
 
 set(SRC 
 RendererPlugin.cpp RendererPlugin.h 
@@ -75,16 +74,15 @@ set(RESOURCES README.md COPYING AUTHORS)
 
 add_executable(ibex ${SRC} ${IRRLICHT_PLUGIN_FILES} ${OGRE_PLUGIN_FILES})
 target_link_libraries(ibex 
-ibex_windows ibex_filesystem ibex_x11 ibex_video ibex_glm ibex_sixense ibex_oculus
+ibex_windows ibex_filesystem ibex_x11 ibex_video ibex_glm ibex_sixense ibex_osvr
 GL GLU glut GLEW
 vlc
 opencv_core opencv_highgui opencv_video opencv_contrib opencv_ts opencv_legacy 
 openal
-ovr
 X11 Xfixes Xdamage Xrandr Xrender Xcomposite Xxf86vm Xi Xext Xinerama udev pthread
 jpeg rt
 ${Boost_LIBRARIES}
-#${OCULUS_LIBRARY}
+${OSVR_LIBRARIES}
 ${IRRLICHT_LIBRARY} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_RenderSystem_GL_LIBRARIES}
 ${OGRE_Terrain_LIBRARIES}
 ${OGRE_ParticleFX_LIBRARIES}

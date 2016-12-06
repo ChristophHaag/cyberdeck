@@ -4,7 +4,7 @@
 #include "../iphone_orientation_plugin/iphone_orientation_listener.h"
 #include "../simpleworld_plugin/SimpleWorldRendererPlugin.h"
 #include "../sixense/sixense_controller.h"
-#include "../oculus/Rift.h"
+#include "../osvr/OSVR.h"
 #include "../ibex.h"
 
 extern "C" {
@@ -948,8 +948,8 @@ int main(int argc, char ** argv)
 
   getcwd(mResourcePath, sizeof(mResourcePath));
 
-  initRift();
-  FusionResult.Reset();
+  _osvrContext = new osvr::clientkit::ClientContext(OSVR_APPLICATION_IDENTIFIER);
+  _osvrRender = osvr::renderkit::createRenderManager(_osvrContext->get(), "OpenGL");
 
   // Instance of the class that tracks position/orientation of desktop
   Desktop3DLocation desktop3DLocation;

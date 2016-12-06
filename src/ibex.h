@@ -19,7 +19,6 @@
 
 #include <time.h>
 
-#include <OVR.h>
 
 class RendererPlugin;
 
@@ -31,11 +30,6 @@ enum DisplayShape {
 
 extern DisplayShape displayShape;
 
-extern OVR::Ptr<OVR::DeviceManager>	pManager;
-extern OVR::Ptr<OVR::HMDDevice>		pHMD;
-extern OVR::Ptr<OVR::SensorDevice>	pSensor;
-extern OVR::SensorFusion			FusionResult;
-extern OVR::HMDInfo				Info;
 
 extern bool					InfoLoaded;
 extern bool					riftConnected;
