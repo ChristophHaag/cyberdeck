@@ -82,7 +82,7 @@ openal
 X11 Xfixes Xdamage Xrandr Xrender Xcomposite Xxf86vm Xi Xext Xinerama udev pthread
 jpeg rt
 ${Boost_LIBRARIES}
-${OSVR_LIBRARIES}
+${OSVR_LIBRARIES} osvrRenderManager osvrClientKit
 ${IRRLICHT_LIBRARY} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_RenderSystem_GL_LIBRARIES}
 ${OGRE_Terrain_LIBRARIES}
 ${OGRE_ParticleFX_LIBRARIES}
