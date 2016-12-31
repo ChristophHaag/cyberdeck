@@ -508,7 +508,7 @@ Ibex::Ibex::Ibex(int argc, char ** argv) {
     
   std::cerr << "Physical Width x Height: " << physicalWidth << "x" << physicalHeight << std::endl;
     
-#ifndef __APPLE__
+#if !defined(__APPLE__) && !defined(__linux__)
     glutInit(&argc, argv);
 #endif
     
