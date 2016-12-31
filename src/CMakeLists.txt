@@ -77,7 +77,7 @@ target_link_libraries(ibex
 ibex_windows ibex_filesystem ibex_x11 ibex_video ibex_glm ibex_sixense ibex_osvr
 GL GLU glut GLEW
 vlc
-opencv_core opencv_highgui opencv_video
+opencv_core opencv_highgui opencv_video opencv_videoio
 openal
 X11 Xfixes Xdamage Xrandr Xrender Xcomposite Xxf86vm Xi Xext Xinerama udev pthread
 jpeg rt
